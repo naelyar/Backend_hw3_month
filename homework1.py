@@ -1,5 +1,6 @@
 from aiogram import Bot, Dispatcher, types
 from aiogram.utils import executor
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from decouple import config
 
 TOKEN = config("TOKEN")
@@ -13,8 +14,12 @@ async def start_command(message:types.Message):
     await message.answer("Hello Naelya")
 
 """First quiz"""
-@dp.message_handler(commands=['quiz1'])
+@dp.message_handler(commands=['quiz'])
 async def quiz_1(message: types.Message):
+    markup = InlineKeyboardMarkup()
+    button_1 = InlineKeyboardButton("NEXT", callback_data="button_1")
+    markup.add(button_1)
+
     question = "Date  of based GeekTech"
     answer = [
         "05.2018",
@@ -30,12 +35,14 @@ async def quiz_1(message: types.Message):
         type='quiz',
         correct_option_id=0,
         explanation="Стыдно не знать",
-        open_period=5
+        open_period=5,
+        reply_markup = markup
     )
 
 """Second quiz"""
-@dp.message_handler(commands=['quiz2'])
-async def quiz_2(message: types.Message):
+
+@dp.callback_query_handler(text="button_1")
+async def quiz_2(call: types.CallbackQuery):
     question = "When is my birthday?"
     answer = [
         "05.06.05",
@@ -44,7 +51,7 @@ async def quiz_2(message: types.Message):
         "10.06.05"
     ]
     await bot.send_poll(
-        chat_id=message.from_user.id,
+        chat_id=call.from_user.id,
         question=question,
         options=answer,
         type='quiz',
