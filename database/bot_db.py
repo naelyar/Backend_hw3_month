@@ -28,5 +28,7 @@ async def sql_command_all():
 async def sql_command_delete(id):
     cursor.execute("DELETE FROM mentorsGeeks WHERE id = ?", (id,))
     db.commit()
+async def sql_command_all_id():
+    return cursor.execute("SELECT id FROM mentorsGeeks").fetchall()
 
 sql_create()
