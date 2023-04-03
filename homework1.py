@@ -9,8 +9,9 @@ async def on_startup(_):
     sql_create()
 callback.register_handlers_callback(dp)
 fsmAdminMentor.register_handlers_fsmAdminMentor(dp)
-extra.register_handlers_extra(dp)
 translater.register_handlers_translater(dp)
+
+extra.register_handlers_extra(dp)
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
